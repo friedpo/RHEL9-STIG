@@ -1255,7 +1255,7 @@
     mode: go-rwx
     path: "{{ rhel9stig_sshd_config_file }}"
 
-- name: "MEDIUM | RHEL-09-255120 | PATCH | RHEL 9 SSH private host key files must have mode 0640 or less permissive."
+- name: "MEDIUM | RHEL-09-255120 | PATCH | RHEL 9 SSH private host key files must have mode 0600 or less permissive."
   when:
     - rhel_09_255120
   tags:
@@ -1267,16 +1267,16 @@
     - V-258000
     - NIST800-53R4_CM-6
   block:
-    - name: "MEDIUM | RHEL-09-255120 | AUDIT | RHEL 9 SSH private host key files must have mode 0640 or less permissive."
+    - name: "MEDIUM | RHEL-09-255120 | AUDIT | RHEL 9 SSH private host key files must have mode 0600 or less permissive."
       ansible.builtin.find:
         path: /etc/ssh/
         pattern: '*_key'
       register: rhel9stig_private_ssh_keys
 
-    - name: "MEDIUM | RHEL-09-255120 | PATCH | RHEL 9 SSH private host key files must have mode 0640 or less permissive."
-      when: item.mode > '0640'
+    - name: "MEDIUM | RHEL-09-255120 | PATCH | RHEL 9 SSH private host key files must have mode 0600 or less permissive."
+      when: item.mode > '0600'
       ansible.builtin.file:
-        mode: u-x,g-wx,o-rwx
+        mode: u-x,g-rwx,o-rwx
         path: "{{ item.path }}"
       loop: "{{ rhel9stig_private_ssh_keys.files }}"
 
