@@ -942,12 +942,12 @@
   block:
     - name: "MEDIUM | RHEL-09-653110 | PATCH | RHEL 9 must allow only the information system security manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited."
       ansible.builtin.file:
-        mode: '0640'
+        mode: '0600'
         path: /etc/audit/auditd.conf
 
     - name: "MEDIUM | RHEL-09-653110 | PATCH | RHEL 9 must allow only the information system security manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited."
       ansible.builtin.file:
-        mode: '0640'
+        mode: '0600'
         path: "{{ item }}"
       with_fileglob:
         - "etc/audit/rules.d/*.rules"
