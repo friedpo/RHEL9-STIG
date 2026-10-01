@@ -878,13 +878,12 @@
   notify: Restart_sssd
   block:
     - name: "MEDIUM | RHEL-09-611170 | AUDIT | RHEL 9 must implement certificate status checking for multifactor authentication. | Capture existence"
-      ansible.builtin.shell: 'grep certificate_verification /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf | grep -v "^#"'
+      ansible.builtin.shell: 'grep -E "^[[:space:]]*certificate_verification" /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf | grep -v "ocsp_dgst=sha512"'
       changed_when: false
       failed_when: rhel9stig_sssd_cert_verification_files.rc not in [ 0, 1 ]
       register: rhel9stig_sssd_cert_verification_files
 
     - name: "MEDIUM | RHEL-09-611170 | PATCH | RHEL 9 must implement certificate status checking for multifactor authentication. | Add if missing"
-      when: rhel9stig_sssd_cert_verification_files.stdout | length == 0
       community.general.ini_file:
         create: true
         group: root
