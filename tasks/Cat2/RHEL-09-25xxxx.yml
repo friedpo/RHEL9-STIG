@@ -1239,7 +1239,7 @@
     owner: root
     path: "{{ rhel9stig_sshd_config_file }}"
 
-- name: "MEDIUM | RHEL-09-255115 | PATCH | RHEL 9 SSH server configuration file must have mode 0600 or less permissive"
+- name: "MEDIUM | RHEL-09-255115 | PATCH | RHEL 9 SSH server configuration files' permissions must not be modified."
   when:
     - rhel_09_255115
   tags:
@@ -1252,7 +1252,9 @@
     - NIST800-53R4_CM-6
     - ssh
   ansible.builtin.file:
-    mode: go-rwx
+    mode: 'u-x,go-rwx'
+    owner: root
+    group: root
     path: "{{ rhel9stig_sshd_config_file }}"
 
 - name: "MEDIUM | RHEL-09-255120 | PATCH | RHEL 9 SSH private host key files must have mode 0600 or less permissive."
