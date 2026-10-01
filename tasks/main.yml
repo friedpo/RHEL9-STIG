@@ -40,11 +40,19 @@
       ansible.builtin.debug:
         msg: system has been discovered as a container
 
+- name: Check if connecting user exists in local /etc/passwd
+  ansible.builtin.command: "grep -q '^{{ ansible_env.SUDO_USER }}:' /etc/passwd"
+  register: local_user_check
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
 - name: Check password set for connecting user
   when:
     - ansible_env.SUDO_USER is defined
     - not system_is_ec2
     - not audit_only
+    - local_user_check.rc == 0
   block:
     - name: Capture current password state of connecting user"
       ansible.builtin.shell: "grep {{ ansible_env.SUDO_USER }} /etc/shadow | awk -F: '{print $2}'"
