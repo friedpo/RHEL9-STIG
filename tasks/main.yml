@@ -46,6 +46,7 @@
   changed_when: false
   failed_when: false
   check_mode: false
+  when: ansible_env.SUDO_USER is defined
 
 - name: Check password set for connecting user
   when:
